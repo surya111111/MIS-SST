@@ -4,5 +4,5 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'index.html', context={'title': 'MIS'})
+    return render(request, 'home.html', context={'title': 'Home'})
 
