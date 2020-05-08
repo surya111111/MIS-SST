@@ -35,6 +35,9 @@ class Authentication(models.Model):
     user_name = models.CharField(max_length=45, blank=True, null=True)
     password_hash = models.CharField(max_length=45, blank=True, null=True)
 
+    def __str__(self):
+        return self.user_name
+
     class Meta:
         managed = False
         db_table = 'authentication'
@@ -46,6 +49,9 @@ class Batch(models.Model):
     term_period = models.ForeignKey('TermPeriod', models.DO_NOTHING)
     cost = models.IntegerField(blank=True, null=True)
     course = models.ForeignKey('Course', models.DO_NOTHING)
+
+    def __str__(self):
+        return self.name + ' ' + str(self.term_period.year) + ' ' + str(self.term_period.code)
 
     class Meta:
         managed = False
@@ -63,6 +69,9 @@ class BatchHasPayment(models.Model):
 
 class CenterSite(models.Model):
     name = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         managed = False
@@ -199,6 +208,9 @@ class TermPeriod(models.Model):
 class Trainer(models.Model):
     authentication = models.ForeignKey(Authentication, models.DO_NOTHING)
     contact = models.ForeignKey(Contact, models.DO_NOTHING)
+
+    def __str__(self):
+        return self.contact.first
 
     class Meta:
         managed = False

@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from .models import Contact, Student
+from .models import Contact,Batch,CenterSite
 
 def detail(request, id):
     try:
@@ -11,22 +11,26 @@ def detail(request, id):
     return render(request, 'detail.html', {'item': item, 'title': 'Contact Detail'})
 
 
-def student_detail(request, id):
+def batch_detail(request, id):
     try:
-        item = Student.objects.get(pk=id)
+        item = Batch.objects.get(pk=id)
     except Contact.DoesNotExist:
         raise Http404("Item does not exist")
-    return render(request, 'student_detail.html', {'item': item, 'title': 'Student Detail'})
+    return render(request, 'batch_detail.html', {'item': item, 'title': 'Batch Detail'})
 
 
-def index(request):
-    return render(request, 'index.html', {'item_list': Contact.objects.all(), 'title': 'HOME'})
+def home(request):
+    return render(request, 'home.html', {'title': 'HOME'})
 
 
-def student(request):
-    return render(request, 'student.html', {'item_list': Student.objects.all(), 'title': 'Students'})
+def batch(request):
+    return render(request, 'batch.html', {'item_list': Batch.objects.all(), 'title': 'Batch'})
 
-#
+
+def center(request):
+    return render(request, 'center.html', {'center': CenterSite.objects.all().first(), 'title': 'Center'})
+
+
 # def index_long(request):
 #
 #     item_list = Contact.objects.all()
