@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-{{ title }}
-</body>
-</html>
+{% include 'page_top.html' %}
+<h1>{{ title }}</h1>
+{% if item_list %}
+        {% for item in item_list %}
+            <div><a href="/mis_app/{{ item.id }}/">{{ item.first }}</a></div>
+        {% endfor %}
+{% else %}
+    <p>No items are available.</p>
+{% endif %}
+{% include 'page_bottom.html' %}
