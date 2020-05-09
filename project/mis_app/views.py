@@ -1,15 +1,29 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from .models import Contact, Batch, CenterSite, Employer, Exam, Holidays, Payment, Placement
+from .models import Contact, ContactForm, Batch, CenterSite, Employer, Exam, Holidays, Payment, Placement
 
 
-def detail(request, id):
+def contact(request):
+    return render(request, 'contact.html', {'item_list': Contact.objects.all(), 'title': 'Contact List'})
+
+
+def contact_detail(request, id):
     try:
         item = Contact.objects.get(pk=id)
     except Contact.DoesNotExist:
         raise Http404("Item does not exist")
-    return render(request, 'detail.html', {'item': item, 'title': 'Contact Detail'})
+
+    if request.method == "POST":
+        form = ContactForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            # Do something. Should generally end with a redirect. For example:
+            return contact(request)
+    else:
+        form = ContactForm(instance=item)
+
+    return render(request, 'contact_detail.html', {'item': item, 'title': 'Contact Detail', 'form': form})
 
 
 def batch_detail(request, id):

@@ -9,6 +9,16 @@
 # Created with inspectdb
 
 from django.db import models
+from django.forms import ModelForm
+
+
+class ModelFormBootstrap (ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 
 class Admin(models.Model):
@@ -91,6 +101,15 @@ class Contact(models.Model):
     class Meta:
         managed = False
         db_table = 'contact'
+
+
+class ContactForm (ModelFormBootstrap):
+
+    class Meta:
+        model = Contact
+        exclude = ()
+        # fields = ('first', 'government_id', 'primary_email', 'primary_phone', 'nickname')
+        # exclude = ('government_id',)
 
 
 class Course(models.Model):
