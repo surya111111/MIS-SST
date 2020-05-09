@@ -1,6 +1,7 @@
 {% include 'page_top.html' %}
 
 <form method="POST" class="form-group">
+    {% csrf_token %}
     {{ form }}
     <input type="submit" class="btn btn-primary">
 </form>
