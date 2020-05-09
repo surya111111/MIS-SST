@@ -96,6 +96,9 @@ class Contact(models.Model):
 class Course(models.Model):
     subject = models.CharField(max_length=255, blank=True, null=True)
 
+    def __str__(self):
+        return self.subject
+
     class Meta:
         managed = False
         db_table = 'course'
@@ -104,6 +107,9 @@ class Course(models.Model):
 class Employer(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     contact = models.ForeignKey(Contact, models.DO_NOTHING)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         managed = False
@@ -115,6 +121,10 @@ class Exam(models.Model):
     course = models.ForeignKey(Course, models.DO_NOTHING)
     score_cut_off = models.IntegerField(blank=True, null=True)
     examcol = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return  self.course.subject + ' ' + str(self.name) + ' ' + self.examcol
+
 
     class Meta:
         managed = False
@@ -138,6 +148,9 @@ class Holidays(models.Model):
     name = models.CharField(max_length=45, blank=True, null=True)
     term_period = models.ForeignKey('TermPeriod', models.DO_NOTHING)
 
+    def __str__(self):
+        return self.name + ' ' + str(self.term_period)
+
     class Meta:
         managed = False
         db_table = 'holidays'
@@ -148,6 +161,8 @@ class Payment(models.Model):
     received = models.DateField(blank=True, null=True)
     payment_method = models.ForeignKey('PaymentMethod', models.DO_NOTHING)
 
+    def __str__(self):
+        return self.payment_method.name + ' - ' + str(self.amount) + ' ' + ' ' + str(self.received)
     class Meta:
         managed = False
         db_table = 'payment'
@@ -167,6 +182,9 @@ class PaymentMethod(models.Model):
 class Placement(models.Model):
     employer = models.ForeignKey(Employer, models.DO_NOTHING)
     student = models.ForeignKey('Student', models.DO_NOTHING)
+
+    def __str__(self):
+        return self.employer.name + ' ' + self.student.contact.first
 
     class Meta:
         managed = False
@@ -199,7 +217,8 @@ class TermPeriod(models.Model):
     code = models.CharField(max_length=2, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-
+    def __str__(self):
+        return str(self.year) + ' ' + self.code
     class Meta:
         managed = False
         db_table = 'term_period'

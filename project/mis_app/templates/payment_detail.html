@@ -1,0 +1,11 @@
+{% include 'page_top.html' %}
+<h1>
+    {{ item.payment_method.name }}
+</h1>
+<small>
+    Amount:{{ item.amount}}<br>
+    Received Date:{{item.received }}
+</small>
+
+{% include 'page_bottom.html' %}
+

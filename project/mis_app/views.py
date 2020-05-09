@@ -1,7 +1,8 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from .models import Contact,Batch,CenterSite
+from .models import Contact, Batch, CenterSite, Employer, Exam, Holidays, Payment, Placement
+
 
 def detail(request, id):
     try:
@@ -19,6 +20,14 @@ def batch_detail(request, id):
     return render(request, 'batch_detail.html', {'item': item, 'title': 'Batch Detail'})
 
 
+def employer_detail(request, id):
+    try:
+        item = Employer.objects.get(pk=id)
+    except Employer.DoesNotExist:
+        raise Http404("Item does not exist")
+    return render(request, 'employer_detail.html', {'item': item, 'title': 'Employer Detail'})
+
+
 def home(request):
     return render(request, 'home.html', {'title': 'HOME'})
 
@@ -29,6 +38,61 @@ def batch(request):
 
 def center(request):
     return render(request, 'center.html', {'center': CenterSite.objects.all().first(), 'title': 'Center'})
+
+
+def employer(request):
+    return render(request, 'employer.html', {'item_list': Employer.objects.all(), 'title': 'Employer'})
+
+
+def exam(request):
+    return render(request, 'exam.html', {'item_list': Exam.objects.all(), 'title': 'Exam'})
+
+
+def holiday(request):
+    return render(request, 'holiday.html',{'item_list': Holidays.objects.all(), 'title': 'Holidays'})
+
+def payment(request):
+    return render(request, 'payment.html',{'item_list': Payment.objects.all(), 'title': 'Payment'})
+
+def payment_detail(request, id):
+    try:
+        item = Payment.objects.get(pk=id)
+
+    except Payment.DoesNotExist:
+        raise Http404("Item does not exist")
+    return render(request, 'payment_detail.html', {'item': item, 'title': 'Payment Detail'})
+
+def payment(request):
+    return render(request, 'placement.html',{'item_list': Placement.objects.all(), 'title': 'Placement'})
+
+def placement(request):
+    return render(request, 'placement.html',{'item_list': Placement.objects.all(), 'title': 'Placement'})
+
+def placement_detail(request, id):
+    try:
+        item = Placement.objects.get(pk=id)
+
+    except Placement.DoesNotExist:
+        raise Http404("Item does not exist")
+    return render(request, 'Placement_detail.html', {'item': item, 'title': 'Placement Detail'})
+
+
+def holiday_detail(request, id):
+    try:
+        item = Holidays.objects.get(pk=id)
+
+    except Holidays.DoesNotExist:
+        raise Http404("Item does not exist")
+    return render(request, 'holiday_detail.html', {'item': item, 'title': 'Holiday Detail'})
+
+
+def exam_detail(request, id):
+    try:
+        item = Exam.objects.get(pk=id)
+
+    except Exam.DoesNotExist:
+        raise Http404("Item does not exist")
+    return render(request, 'exam_detail.html', {'item': item, 'title': 'Exam Detail'})
 
 
 # def index_long(request):

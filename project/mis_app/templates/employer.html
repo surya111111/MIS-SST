@@ -1,0 +1,21 @@
+{% include 'page_top.html' %}
+
+<h1>{{ title }}</h1>
+
+{% if item_list %}
+
+        {% for item in item_list %}
+
+            <div><a href="/mis_app/employer/{{ item.id }}/">
+                {{ item.name }}
+            </a></div>
+
+        {% endfor %}
+
+{% else %}
+    <p>
+        No Employers are available.
+    </p>
+{% endif %}
+
+{% include 'page_bottom.html' %}
