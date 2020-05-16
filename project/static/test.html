@@ -1,0 +1,62 @@
+<body>
+<select id="target" size="24">
+</select>
+<!--<form action="http://127.0.0.1:8000/mis_app/api_v1/contacts/" method="POST">-->
+<input id="first" name="first" placeholder="First Name">
+<input id="primary_email" name="primary_email" placeholder="Email">
+<input id="government_id" name="government_id" placeholder="ADHAAR">
+<input id="primary_phone" name="primary_phone" placeholder="Phone">
+<input id="nickname" name="nickname" placeholder="Nickname">
+<!--    <input TYPE="submit">-->
+<button onclick="save_contact()">Save</button>
+<!--</form>-->
+</body>
+<script>
+    function save_contact() {
+        const myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        const object = {
+            first: document.getElementById("first").value,
+            primary_email: document.getElementById("primary_email").value,
+            government_id: document.getElementById("government_id").value,
+            primary_phone: document.getElementById("primary_phone").value,
+            nickname: document.getElementById("nickname").value,
+        }
+        const data = JSON.stringify(object)
+        const request = new Request('http://127.0.0.1:8000/mis_app/api_v1/contacts/', {
+            method: 'POST',
+            body: data,
+            headers: myHeaders
+        });
+        fetch(request)
+            .then(response => {
+                if (response.status === 201) {
+                    refresh_list();
+                }
+            });
+    }
+
+    const target = document.getElementById("target");
+
+    function render_Contact(data) {
+        const element = document.createElement("option");
+        element.innerHTML = data.first;
+        target.appendChild(element)
+    }
+
+    function refresh_list() {
+
+        target.innerHTML = "";
+        const request = new Request('http://127.0.0.1:8000/mis_app/api_v1/contacts/');
+        fetch(request)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json()
+                }
+            }).then(data => {
+            data.forEach(render_Contact);
+        });
+    }
+
+    refresh_list();
+</script>

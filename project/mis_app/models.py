@@ -226,6 +226,9 @@ class StudentInBatch(models.Model):
     student = models.ForeignKey(Student, models.DO_NOTHING)
     course = models.ForeignKey(Batch, models.DO_NOTHING)
 
+    def __str__(self):
+        return self.student.__str__()
+
     class Meta:
         managed = False
         db_table = 'student_in_batch'
