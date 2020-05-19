@@ -12,13 +12,12 @@ from django.db import models
 from django.forms import ModelForm
 
 
-class ModelFormBootstrap (ModelForm):
+class ModelFormBootstrap(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
-
 
 
 class Admin(models.Model):
@@ -103,8 +102,7 @@ class Contact(models.Model):
         db_table = 'contact'
 
 
-class ContactForm (ModelFormBootstrap):
-
+class ContactForm(ModelFormBootstrap):
     class Meta:
         model = Contact
         exclude = ()
@@ -142,8 +140,7 @@ class Exam(models.Model):
     examcol = models.CharField(max_length=45, blank=True, null=True)
 
     def __str__(self):
-        return  self.course.subject + ' ' + str(self.name) + ' ' + self.examcol
-
+        return self.course.subject + ' ' + str(self.name) + ' ' + self.examcol
 
     class Meta:
         managed = False
@@ -156,7 +153,8 @@ class ExamResults(models.Model):
     student_has_course_student_id = models.PositiveIntegerField()
     student_has_course_course_id = models.PositiveIntegerField()
     score = models.IntegerField(blank=True, null=True)
-    pass_field = models.IntegerField(db_column='pass', blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    pass_field = models.IntegerField(db_column='pass', blank=True,
+                                     null=True)  # Field renamed because it was a Python reserved word.
 
     class Meta:
         managed = False
@@ -182,6 +180,7 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.payment_method.name + ' - ' + str(self.amount) + ' ' + ' ' + str(self.received)
+
     class Meta:
         managed = False
         db_table = 'payment'
@@ -239,8 +238,10 @@ class TermPeriod(models.Model):
     code = models.CharField(max_length=2, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+
     def __str__(self):
         return str(self.year) + ' ' + self.code
+
     class Meta:
         managed = False
         db_table = 'term_period'
@@ -256,3 +257,9 @@ class Trainer(models.Model):
     class Meta:
         managed = False
         db_table = 'trainer'
+
+
+class TrainerForm(ModelFormBootstrap):
+    class Meta:
+        model = Trainer
+        exclude = ()

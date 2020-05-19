@@ -1,0 +1,21 @@
+{% include 'page_top.html' %}
+
+<h1>{{ title }}</h1>
+
+{% if item_list %}
+
+        {% for item in item_list %}
+
+            <div><a href="/trainer/{{ item.id }}/">
+                {{ item }}
+            </a></div>
+
+        {% endfor %}
+
+{% else %}
+    <p>
+        No items are available.
+    </p>
+{% endif %}
+
+{% include 'page_bottom.html' %}

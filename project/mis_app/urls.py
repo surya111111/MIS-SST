@@ -30,6 +30,9 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('contact/<int:id>/', views.contact_detail, name='contact_detail'),
 
+    path('trainer/', views.trainer, name='trainer'),
+    path('trainer/<int:id>/', views.trainer_detail, name='contact_detail'),
+
     path('batch/', views.batch, name='batch'),
     path('', views.home, name='home'),
     path('batch/<int:id>/', views.batch_detail, name='batch_detail'),

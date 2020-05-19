@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from .models import Contact, ContactForm, Batch, CenterSite, Employer, Exam, Holidays, Payment, Placement
+from .models import Contact, ContactForm, Batch, CenterSite, Employer, Exam, Holidays, Payment, Placement, Trainer, TrainerForm
 
 
 def contact(request):
@@ -18,12 +18,34 @@ def contact_detail(request, id):
         form = ContactForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
-            # Do something. Should generally end with a redirect. For example:
             return contact(request)
     else:
         form = ContactForm(instance=item)
 
     return render(request, 'contact_detail.html', {'item': item, 'title': 'Contact Detail', 'form': form})
+
+
+def trainer(request):
+    return render(request, 'trainer.html', {'item_list': Trainer.objects.all(), 'title': 'Trainer List'})
+
+
+def trainer_detail(request, id):
+    try:
+        item = Trainer.objects.get(pk=id)
+    except Trainer.DoesNotExist:
+        raise Http404("Item does not exist")
+
+    if request.method == "POST":
+        form = TrainerForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            return trainer(request)
+    else:
+        form = TrainerForm(instance=item)
+
+    form2 = ContactForm(instance=item.contact)
+
+    return render(request, 'trainer_detail.html', {'item': item, 'title': 'Trainer Detail', 'form': form, 'form2': form2})
 
 
 def batch_detail(request, id):
@@ -107,19 +129,4 @@ def exam_detail(request, id):
     except Exam.DoesNotExist:
         raise Http404("Item does not exist")
     return render(request, 'exam_detail.html', {'item': item, 'title': 'Exam Detail'})
-
-
-# def index_long(request):
-#
-#     item_list = Contact.objects.all()
-#
-#     context = {
-#         'item_list': item_list,
-#         'title': 'MIS'
-#     }
-#
-#     template = loader.get_template('index.html')
-#     response = template.render(context, request)
-#     return HttpResponse(response)
-#     # return render(request, 'index.html', context={'title': 'MIS'})
 
