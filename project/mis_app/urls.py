@@ -1,51 +1,58 @@
+from rest_framework.relations import PrimaryKeyRelatedField
 from django.urls import path
 from . import views
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers, serializers, viewsets
-from .models import Contact
+from .models import *
+router = routers.DefaultRouter()
 
-
-# Serializers define the API representation.
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Contact
         fields = ['first', 'primary_email', 'government_id', 'primary_phone', 'nickname', ]
 
-
-# ViewSets define the view behavior.
 class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+router.register(r'contact', ContactViewSet)
+   
+class CourseSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['subject', ]
 
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+router.register(r'course', CourseViewSet)
 
-router = routers.DefaultRouter()
-router.register(r'contacts', ContactViewSet)
+class BatchSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Batch
+        fields = ['name','cost','course',]
+        
+class BatchViewSet(viewsets.ModelViewSet):
+    queryset = Batch.objects.all()
+    serializer_class = BatchSerializer
+router.register(r'batch', BatchViewSet)
 
+class AttendanceSerializer(serializers.HyperlinkedModelSerializer):
+    contact = PrimaryKeyRelatedField(queryset=Contact.objects.all())
+
+    class Meta:
+        model = Attendance
+        fields = ['id','attended','contact']
+        
+class AttendanceViewSet(viewsets.ModelViewSet):
+    queryset = Attendance.objects.all()
+    serializer_class = AttendanceSerializer
+router.register(r'attendance', AttendanceViewSet)
 
 urlpatterns = [
     url(r'^api_v1/', include(router.urls)),
+    url(r'', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('contact/', views.contact, name='contact'),
-    path('contact/<int:id>/', views.contact_detail, name='contact_detail'),
-
-    path('trainer/', views.trainer, name='trainer'),
-    path('trainer/<int:id>/', views.trainer_detail, name='contact_detail'),
-
-    path('batch/', views.batch, name='batch'),
-    path('', views.home, name='home'),
-    path('batch/<int:id>/', views.batch_detail, name='batch_detail'),
-    path('center/', views.center, name='center'),
-    path('employer/', views.employer, name='employer'),
-    path('employer/<int:id>/', views.employer_detail, name='employer_detail'),
-    path('exam/', views.exam, name='exam'),
-    path('exam/<int:id>/', views.exam_detail, name='exam_detail'),
-    path('holiday/', views.holiday, name='holiday'),
-    path('holiday/<int:id>/', views.holiday_detail, name='holiday_detail'),
-    path('payment/', views.payment, name='payment'),
-    path('payment/<int:id>/', views.payment_detail, name='payment_detail'),
-    path('placement/', views.placement, name='placement'),
-    path('placement/<int:id>/', views.placement_detail, name='placement_detail'),
-
+    
 ]

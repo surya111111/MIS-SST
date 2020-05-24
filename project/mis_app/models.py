@@ -31,9 +31,15 @@ class Admin(models.Model):
 
 
 class Attendance(models.Model):
-    id = models.OneToOneField('Batch', models.DO_NOTHING, db_column='id', primary_key=True)
     attended = models.IntegerField(blank=True, null=True)
     contact = models.ForeignKey('Contact', models.DO_NOTHING)
+    batch = models.ForeignKey('Batch', models.DO_NOTHING)
+
+    
+    def __str__(self):
+        return str(self.contact) + ' ' + str(self.attended)
+    
+
 
     class Meta:
         managed = False
